@@ -10,6 +10,8 @@
     "test": "mocha --reporter spec --timeout 5000"
   },
   "dependencies": {
+    "angular": "^1.4.7",
+    "angular-resource": "^1.4.7",
     "async": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
     "bitcore": "^0.13.5",
@@ -30,6 +32,7 @@
     "express-session": "^1.11.3",
     "express-validator": "^2.17.1",
     "fbgraph": "^1.1.0",
+    "fs": "0.0.2",
     "github-api": "^0.10.6",
     "instagram-node": "^0.5.8",
     "jade": "^1.11.0",
