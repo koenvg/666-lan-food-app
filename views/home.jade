@@ -1,12 +1,14 @@
 extends layout
 
 block content
-    div(data-ng-controller="LoginController")
-        a.btn.btn-default(data-ng-click="authenticate('/order')") Order
-        a.btn.btn-default(data-ng-click="register()") Register
-        .row
-            .col-md-4
-                #my_camera(style='width:320px; height:240px;')
-            .col-md-4.col-md-push-4
-                #my_result
-        div {{test}}
+    div(data-ng-controller="LoginController" data-ng-init="attachWebcam()")
+        div
+            .div.margin-bottom-40
+            .row.margin-bottom-20
+                .col-md-6
+                    a.btn.btn-default.btn-giant.green-meadow(data-ng-click="login()") Order
+                .col-md-6
+                    a.btn.btn-default.btn-giant.blue(href="/register") Register
+            .row
+                video( autoplay='true' width='100%')
+                canvas.hidden

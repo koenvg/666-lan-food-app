@@ -48,6 +48,7 @@
     "node-sass-middleware": "^0.9.6",
     "nodemailer": "^1.8.0",
     "passport": "0.3.0",
+    "passport-custom": "^1.0.1",
     "passport-facebook": "^2.0.0",
     "passport-github": "^1.0.0",
     "passport-google-oauth": "^0.2.0",
@@ -64,6 +65,7 @@
     "twilio": "^2.5.1",
     "twit": "^2.1.0",
     "uglify-js": "^2.5.0",
+    "uuid": "^2.0.1",
     "validator": "^4.1.0",
     "yui": "^3.18.1"
   },

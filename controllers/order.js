@@ -1,3 +1,7 @@
-/**
- * Created by koenv_000 on 20/10/2015.
- */
+
+
+exports.order = function(req, res){
+    res.render('order', {
+        title: 'Order'
+    });
+};

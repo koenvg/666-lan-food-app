@@ -1,0 +1,17 @@
+extends layout
+block content
+    div(data-ng-controller="LoginController" data-ng-init="attachWebcam()")
+        .div.margin-bottom-40
+        .row.margin-bottom-20
+            .form-group.form-md-line-input
+                label.col-sm-3.control-label(for='name') Name
+                .col-sm-7
+                    input.form-control(type='text', name='name', id='name', placeholder='Name' data-ng-model="name" required)
+                    .form-control-focus
+        .row.margin-bottom-10
+            .col-md-6
+                video( autoplay='true' width='100%')
+            .col-md-6
+                canvas
+        .row
+            button.btn.btn-default(data-ng-click="register()") Register

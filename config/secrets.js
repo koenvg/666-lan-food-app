@@ -21,10 +21,14 @@
 
 module.exports = {
 
-  db: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test',
+  db: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/self_service',
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
+  face:{
+    'app_key': "578bd7007117210c1b8f95b20e373499",
+    'app_id': "d871fd34"
+  },
   mailgun: {
     user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'

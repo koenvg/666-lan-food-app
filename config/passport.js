@@ -9,18 +9,20 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var CustomStrategy = require('passport-custom').Strategy;
+var request = require('request');
 
 var secrets = require('./secrets');
 var User = require('../models/User');
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function(user, done) {
+
+    done(null, user);
+
 });
 
 /**
@@ -399,6 +401,52 @@ passport.use('venmo', new OAuth2Strategy({
   }
 ));
 
+/**
+ * Custom login
+ */
+passport.use('face', new CustomStrategy(function (req, done) {
+  // Do your custom user finding logic here...
+  var regex = /^data:.+\/(.+);base64,(.*)$/;
+  var image = req.body.image;
+
+  var matches = image.match(regex);
+  var data = matches[2];
+  request.post({
+    headers: {
+      'content-type' : 'application/json',
+      'app_key': secrets.face.app_key,
+      'app_id': secrets.face.app_id
+    },
+    url: 'https://api.kairos.com/recognize',
+    body:    JSON.stringify({
+      "image":data,
+      "gallery_name":"selfServiceTest2"
+    })
+  }, function(error, response, body){
+    var data = JSON.parse(body);
+
+    if (data.Errors) {
+      done(data.Errors);
+    }else{
+      var transaction = data.images[0].transaction;
+      if(transaction.status == "success"){
+        var id = transaction.subject;
+        User.find({faceId: id},function(err, user){
+          if(err){
+            done(err);
+          }
+          console.log(user);
+          if(user){
+            done(err, user);
+          }
+        })
+      }else{
+        done(data);
+      }
+      console.log(body);
+    }
+  });
+}));
 /**
  * Login Required middleware.
  */

@@ -1,26 +1,13 @@
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
+var uuid = require('uuid');
 
 var userSchema = new mongoose.Schema({
   name: { type: String, unique: true, lowercase: true },
+  faceId: {type: String}
 });
 
-/**
- * Password hash middleware.
- */
-userSchema.pre('save', function(next) {
-  var user = this;
-  if (!user.isModified('password')) return next();
-  bcrypt.genSalt(10, function(err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
-});
 
 /**
  * Helper method for getting user's gravatar.
