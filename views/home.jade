@@ -1,14 +1,18 @@
 extends layout
 
 block content
+    .loading Loading&#8230;
     div(data-ng-controller="LoginController" data-ng-init="attachWebcam()")
         div
             .div.margin-bottom-40
             .row.margin-bottom-20
                 .col-md-6
-                    a.btn.btn-default.btn-giant.green-meadow(data-ng-click="login()") Order
+                    a.btn.btn-default.btn-giant.blue-dark(data-ng-click="login()") Order
                 .col-md-6
                     a.btn.btn-default.btn-giant.blue(href="/register") Register
+            .row.margin-bottom-20
+                .col-md-12
+                    a.btn.btn-default.btn-giant.blue-chambray(href="/login") I currently do not have a face
             .row
                 video( autoplay='true' width='100%')
                 canvas.hidden

@@ -1,0 +1,56 @@
+extends ../layout
+
+block content
+    .margin-bottom-20
+    .portlet.light
+        .portlet-title
+            .caption
+                i.fa.fa-trophy.font-red-flamingo
+                span.caption-subject.font-red-flamingo.bold.uppercase Products
+        .portlet-body
+            .table-scrollable
+                table.table.table-hover
+                    thead
+                        tr
+                        th #
+                        th Name
+                        th Price
+                        th delete
+                    tbody
+                        for product,index in products
+                            //tr.clickable-row(data-href='/user/#{user._id}')
+                            tr
+                                td #{index + 1}
+                                td #{product.name}
+                                td &euro; #{product.price}
+                                td
+                                    form(action="/product/#{product._id}/delete" method="post")
+                                        input(type='hidden', name='_csrf', value=_csrf)
+                                        button.btn.default.btn-xs.gray(type="submit")
+                                            i.fa.fa-trash-o
+                                            | Delete
+    .row
+        .col-md-12
+            form.form-horizontal.form-row-seperated(method="POST", action="/product")
+                .portlet.light
+                    .portlet-title
+                        .caption
+                            i.fa.fa-trophy.font-red-flamingo
+                            span.caption-subject.font-red-flamingo.bold.uppercase New Product
+                        .actions.btn-set
+                            button.btn.red-flamingo.btn-circle(type="submit")
+                                i.fa.fa-check
+                                | Save
+                    .portlet-body
+                        .form-body
+                            .form-group.form-md-line-input
+                                label.col-md-2.control-label(for="name") Name:
+                                .col-md-10
+                                    input.form-control(name="name" type="text" id="name" placeholder="Enter a name")
+                                    .form-control-focus
+                            .form-group.form-md-line-input
+                                label.col-md-2.control-label(for="price") Price:
+                                .col-md-10
+                                    input.form-control(name="price" type="currency" id="price" placeholder="Enter a price")
+                                    .form-control-focus
+

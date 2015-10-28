@@ -8,6 +8,19 @@ var basePath = "public/images/faces/";
 var request = require('request');
 var uuid = require('uuid');
 
+
+/**
+ * Find user from url
+ */
+exports.user = function(req, res, next, id) {
+    User.findOne({_id: id}).exec(function(err, user) {
+        if (err) req.flash('errors', { msg: err.message });
+        if (!user) req.flash('errors', { msg: "No user found" }); // TODO: redirect to 404
+        req.user = user;
+        next();
+    });
+};
+
 exports.createUser = function(req, res, next) {
     var name = req.body.name;
     var image = req.body.image;
@@ -44,7 +57,10 @@ exports.createUser = function(req, res, next) {
                 if(err){
                     res.status(500).json(err);
                 }else{
-                    res.json(user);
+                    req.logIn(user, function(err) {
+                        if (err) return next(err);
+                        res.json(user);
+                    });
                 }
             });
             console.log(body);
@@ -75,5 +91,31 @@ exports.login = function(req, res, next){
 exports.viewRegister = function(req, res){
     res.render('register', {
         title: 'Register'
+    });
+};
+
+/**
+ * GET /logout
+ * Log out.
+ */
+exports.logout = function(req, res) {
+    req.logout();
+    res.redirect('/');
+};
+
+exports.showLoginPage = function(req, res){
+    User.find({}, function(err, users){
+        if (err) return next(err);
+        res.render('login', {
+            title: 'Users',
+            users: users
+        });
+    });
+};
+exports.loginWithThatUser = function(req, res){
+    var user = req.user;
+    req.logIn(user, function(err) {
+        if (err) return next(err);
+        return res.redirect('/order');
     });
 };

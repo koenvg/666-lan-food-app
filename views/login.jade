@@ -1,0 +1,28 @@
+extends ./layout
+block content
+    .margin-bottom-20
+    .portlet.light
+        .portlet-title
+            .caption
+                span.caption-subject.font-red-flamingo.bold.uppercase Users
+        .portlet-body
+            .table-scrollable
+                table.table.table-hover
+                    thead
+                        tr
+                        th #
+                        th Name
+                        th Login
+                    tbody
+                        for user,index in users
+                            //tr.clickable-row(data-href='/user/#{user._id}')
+                            tr
+                                td #{index + 1}
+                                td #{user.name}
+                                td
+                                    form(action="/user/#{user._id}/login" method="post")
+                                        input(type='hidden', name='_csrf', value=_csrf)
+                                        button.btn.default.btn-xs.gray(type="submit")
+                                            i.fa.fa-trash-o
+                                            | Login
+

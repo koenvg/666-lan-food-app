@@ -6,6 +6,8 @@ angular.module('self-service').controller('LoginController', ['$scope', 'User', 
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
     var video = document.querySelector('video');
+    var loading = $(".loading");
+    loading.hide();
 
 
     $scope.attachWebcam = function(){
@@ -35,8 +37,13 @@ angular.module('self-service').controller('LoginController', ['$scope', 'User', 
                 name: $scope.name,
                 image: data_uri
             });
+            loading.show();
             user.$save(function(u, responseHeaders){
+                window.location.href = '/order';
+            }, function(u, responseHeaders){
+                loading.hide();
                 console.log(u);
+                alert("An error occurred while registering you account please contact the administrator.");
             });
         }
 
@@ -47,8 +54,13 @@ angular.module('self-service').controller('LoginController', ['$scope', 'User', 
         var data = {
             image: data_uri
         };
+        loading.show();
         $http.post("/login", data).success(function(data, status) {
             window.location.href = '/order';
+        }).error(function(data, status){
+            loading.hide();
+            console.log(data);
+            alert("Do you even have a face bro?")
         });
     };
 

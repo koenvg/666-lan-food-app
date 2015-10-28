@@ -1,4 +1,51 @@
 extends layout
 block content
     div(data-ng-controller="OrderController" data-ng-init="")
-        h1 What did you take?
+        .heading
+            h2.text-center.margin-bottom-20
+                | Logged in as: #{user.name}
+        .row
+            .col-md-8
+                .portlet.light
+                    .portlet-title
+                        .caption
+                            span.caption-subject.font-red-flamingo.bold.uppercase Products
+                        .actions.btn-set
+                            form(action="/logout" method="get")
+                                button.btn.red-flamingo.btn-circle(type="submit")
+                                    i.fa.fa-check
+                                    | I am done ordering!
+                    .portlet-body
+                        .row
+                            for product,index in products
+                                .col-md-4.product
+                                    form(action="/order/#{product._id}/" method="post")
+                                        button.btn.btn-default.green-meadow(type="submit") #{product.name} - &euro; #{product.price}
+            .col-md-4
+                .portlet.light
+                    .portlet-title
+                        .caption
+                            span.caption-subject.font-red-flamingo.bold.uppercase Your orders
+                    .portlet-body
+                        table.table.table-hover
+                            thead
+                                tr
+                                th #
+                                th Date
+                                th Name
+                                th Price
+                                th Delete
+                            tbody
+                                for order,index in user.orders
+                                    tr
+                                        td #{index + 1}
+                                        td #{order.date}
+                                        td #{order.productName}
+                                        td &euro; #{order.priceThen}
+                                        td
+                                            form(action="/order/#{order._id}/delete" method="post")
+                                                input(type='hidden', name='_csrf', value=_csrf)
+                                                button.btn.default.btn-xs.gray(type="submit")
+                                                    i.fa.fa-trash-o
+                                                    | Delete
+                        div total: &euro; #{total}

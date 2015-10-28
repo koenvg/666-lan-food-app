@@ -16,13 +16,16 @@ var secrets = require('./secrets');
 var User = require('../models/User');
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  console.log("Passport USER");
+  console.log(user._id);
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function(id, done) {
 
-    done(null, user);
-
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 /**
@@ -431,11 +434,10 @@ passport.use('face', new CustomStrategy(function (req, done) {
       var transaction = data.images[0].transaction;
       if(transaction.status == "success"){
         var id = transaction.subject;
-        User.find({faceId: id},function(err, user){
+        User.findOne({faceId: id},function(err, user){
           if(err){
             done(err);
           }
-          console.log(user);
           if(user){
             done(err, user);
           }

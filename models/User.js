@@ -1,11 +1,15 @@
-var bcrypt = require('bcrypt-nodejs');
-var crypto = require('crypto');
 var mongoose = require('mongoose');
 var uuid = require('uuid');
 
 var userSchema = new mongoose.Schema({
   name: { type: String, unique: true, lowercase: true },
-  faceId: {type: String}
+  faceId: {type: String},
+  orders: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
+    unique: true
+  }]
+
 });
 
 
