@@ -423,7 +423,7 @@ passport.use('face', new CustomStrategy(function (req, done) {
     url: 'https://api.kairos.com/recognize',
     body:    JSON.stringify({
       "image":data,
-      "gallery_name":"selfServiceTest2"
+      "gallery_name":secrets.face.galeryId
     })
   }, function(error, response, body){
     var data = JSON.parse(body);
@@ -440,6 +440,23 @@ passport.use('face', new CustomStrategy(function (req, done) {
           }
           if(user){
             done(err, user);
+          }else{
+            //no user is found with this id so the user needs to be removed from the gallery
+            request.post({
+              headers: {
+                'content-type' : 'application/json',
+                'app_key': secrets.face.app_key,
+                'app_id': secrets.face.app_id
+              },
+              url: 'https://api.kairos.com/gallery/remove_subject',
+              body:    JSON.stringify({
+                "gallery_name": secrets.face.galeryId,
+                "subject_id": id
+              })
+            }, function(error, response,body){
+              console.log("removed image from gelary with id: " + id );
+              done(error);
+            });
           }
         })
       }else{

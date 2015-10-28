@@ -39,7 +39,7 @@ exports.createUser = function(req, res, next) {
         body:    JSON.stringify({
             "image":data,
             "subject_id":imageId,
-            "gallery_name":"selfServiceTest2",
+            "gallery_name":secrets.face.galeryId,
             "selector":"SETPOSE",
             "symmetricFill":"true"
         })
@@ -55,7 +55,22 @@ exports.createUser = function(req, res, next) {
             });
             user.save(function(err){
                 if(err){
-                    res.status(500).json(err);
+                    //remove the face
+                    request.post({
+                        headers: {
+                            'content-type' : 'application/json',
+                            'app_key': secrets.face.app_key,
+                            'app_id': secrets.face.app_id
+                        },
+                        url: 'https://api.kairos.com/gallery/remove_subject',
+                        body:    JSON.stringify({
+                            "gallery_name": secrets.face.galeryId,
+                            "subject_id": imageId
+                        })
+                    }, function(error, response,body){
+                        console.log("removed image from gelary with id: " +imageId );
+                        res.status(500).json(err);
+                    });
                 }else{
                     req.logIn(user, function(err) {
                         if (err) return next(err);
