@@ -32,14 +32,14 @@ exports.viewProducts = function(req, res, next){
 
 
 exports.addProduct = function(req, res, next){
-    req.assert('productId', 'Please enter a valid product').notEmpty();
+    req.assert('name', 'Please enter a valid product').notEmpty();
     req.assert('price', 'Please enter a price').notEmpty();
 
     var errors = req.validationErrors();
 
     if (errors) {
         req.flash('errors', errors);
-        return res.redirect('/product');
+        return res.redirect('/not-a-product');
     }
     var product = new Product({
         name: req.body.name,
@@ -48,10 +48,11 @@ exports.addProduct = function(req, res, next){
 
     product.save(function(err) {
         if (err) {
+            console.log(err);
             req.flash('errors', { msg: err });
             next(err);
         } else {
-            res.redirect('/product');
+            res.redirect('/not-a-product');
         }
     });
 };
@@ -64,7 +65,7 @@ exports.deleteProduct = function(req, res, next){
             req.flash('errors', { msg: err });
             next(err);
         } else {
-            res.redirect('/product');
+            res.redirect('/not-a-product');
         }
     });
 };

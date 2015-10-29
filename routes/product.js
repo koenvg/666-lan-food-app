@@ -3,7 +3,7 @@ var passportConf = require('../config/passport');
 
 module.exports = function(app) {
 
-    app.get('/product', passportConf.isAuthenticated, productController.viewProducts);
+    app.get('/not-a-product', passportConf.isAuthenticated, productController.viewProducts);
     app.post('/product', passportConf.isAuthenticated, productController.addProduct);
     app.post('/product/:productId/delete', passportConf.isAuthenticated, productController.deleteProduct);
 
